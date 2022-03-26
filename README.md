@@ -21,5 +21,5 @@ Might build this app into a full blown Javascript/Web API pacman game later.
    
    
 ### License
-This product is licensed MIT license. Please read the exact conditions under the LICENSE file.
+This product is licensed under MIT license. Please read the exact conditions under the LICENSE file.
 
