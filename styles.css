@@ -1,5 +1,5 @@
 body {
-    background-color: #002b36;
+    background-color: #000000; /* Changed to black */
 }
 
 .logo {
@@ -13,6 +13,30 @@ button {
     background: teal;
 }
 img {
-    height: 50px;
-    color : blue;
+    height: 20px; /* Match cellSize */
+    width: 20px;  /* Match cellSize */
+}
+
+#game {
+    position: relative; /* Ensures it contains absolutely positioned children */
+    border: 1px solid white; /* Visual aid to see the game boundaries */
+    /* width and height are now set by JavaScript */
+    margin-top: 20px; /* Add some space above the game area */
+}
+
+.maze-wall {
+    background-color: #191970; /* Changed to Midnight Blue */
+    width: 20px; /* Should match cellSize in JS */
+    height: 20px; /* Should match cellSize in JS */
+    border: 1px solid #000033; /* Added border for depth */
+    box-sizing: border-box; /* Include border in width/height */
+    /* Position is set via JS */
+}
+
+.maze-path {
+    background-color: #000000; /* Changed to Black */
+    width: 20px; /* Should match cellSize in JS */
+    height: 20px; /* Should match cellSize in JS */
+    box-sizing: border-box; /* Ensure consistent sizing */
+    /* Position is set via JS */
 }
