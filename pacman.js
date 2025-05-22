@@ -12,13 +12,15 @@ const colorFilters = [
 ];
 
 const maze = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1],
+    [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 var mouthFrame = 0;
 const pacMen = [];  // This array holds all the pacmen
@@ -36,7 +38,65 @@ function preloadImages() {
 }
 
 // Call preloadImages at the start
-preloadImages();
+// preloadImages(); // Will be called after DOMContentLoaded
+
+const cellSize = 20; // Define cell size for the maze
+
+function renderMaze() {
+    const gameDiv = document.getElementById('game');
+    if (!gameDiv) {
+        console.error('Game div not found! Cannot render maze.');
+        return;
+    }
+    gameDiv.style.position = 'relative'; // Ensure gameDiv can contain positioned children
+    
+    // Dynamically set game container size
+    if (maze.length > 0 && maze[0].length > 0) {
+        gameDiv.style.width = maze[0].length * cellSize + 'px';
+        gameDiv.style.height = maze.length * cellSize + 'px';
+    } else {
+        console.error('Maze is empty or invalid. Cannot set game dimensions.');
+        return; // Don't proceed with rendering if maze is invalid
+    }
+
+    for (let i = 0; i < maze.length; i++) {
+        for (let j = 0; j < maze[i].length; j++) {
+            const cell = document.createElement('div');
+            cell.style.width = `${cellSize}px`;
+            cell.style.height = `${cellSize}px`;
+            cell.style.position = 'absolute';
+            cell.style.left = `${j * cellSize}px`;
+            cell.style.top = `${i * cellSize}px`;
+
+            if (maze[i][j] === 1) {
+                cell.classList.add('maze-wall');
+            } else {
+                cell.classList.add('maze-path');
+            }
+            gameDiv.appendChild(cell);
+        }
+    }
+}
+
+// Call renderMaze to draw the maze on script load
+// renderMaze(); // Will be called after DOMContentLoaded
+
+document.addEventListener('DOMContentLoaded', () => {
+    preloadImages();
+    renderMaze();
+});
+
+// Helper function to get cell type (0 for path, 1 for wall)
+function getCellType(pixelX, pixelY) {
+    const gridCol = Math.floor(pixelX / cellSize);
+    const gridRow = Math.floor(pixelY / cellSize);
+
+    // Check if out of maze bounds
+    if (gridRow < 0 || gridRow >= maze.length || gridCol < 0 || gridCol >= maze[0].length) {
+        return 1; // Treat out-of-bounds as a wall
+    }
+    return maze[gridRow][gridCol];
+}
 
 const cellSize = 20; // Define cell size for the maze
 
@@ -199,6 +259,7 @@ function update() {
                 const r_next = nextGridPosition.row;
                 const c_next = nextGridPosition.col;
 
+
                 // Check bounds and if the next cell is a path (0)
                 if (r_next >= 0 && r_next < maze.length &&
                     c_next >= 0 && c_next < maze[0].length &&
@@ -208,7 +269,6 @@ function update() {
                     item.gridPosition = nextGridPosition;
                     item.position.x = item.gridPosition.col * cellSize;
                     item.position.y = item.gridPosition.row * cellSize;
-
                     item.img.style.left = item.position.x + 'px';
                     item.img.style.top = item.position.y + 'px';
                 } else {
