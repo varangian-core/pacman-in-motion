@@ -13,6 +13,28 @@ button {
     background: teal;
 }
 img {
-    height: 50px;
-    color : blue;
+    height: 20px; /* Match cellSize */
+    width: 20px;  /* Match cellSize */
+}
+
+#game {
+    position: relative; /* Ensures it contains absolutely positioned children */
+    border: 1px solid white; /* Visual aid to see the game boundaries */
+    width: 200px; /* 10 cells * 20px/cell */
+    height: 140px; /* 7 cells * 20px/cell */
+    margin-top: 20px; /* Add some space above the game area */
+}
+
+.maze-wall {
+    background-color: blue;
+    width: 20px; /* Should match cellSize in JS */
+    height: 20px; /* Should match cellSize in JS */
+    /* Position is set via JS */
+}
+
+.maze-path {
+    background-color: lightgrey;
+    width: 20px; /* Should match cellSize in JS */
+    height: 20px; /* Should match cellSize in JS */
+    /* Position is set via JS */
 }
